@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>it.unina.bugboard26</groupId>
+  <artifactId>it.unina.bugboard26_Issue</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>BugBoard26-Issue</name>
+  <dependencies>
+  	<dependency>
+  		<groupId>it.unina.bugboard26</groupId>
+  		<artifactId>BugBoard26-ElenchiServer</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>servlet-api</artifactId>
+	    <version>3.0-alpha-1</version>
+	    <scope>provided</scope>
+	</dependency>
+  	<dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>6.1.0</version>
+        <scope>provided</scope>
+    </dependency>
+  	<dependency>
+  		<groupId>it.unina.bugboard26</groupId>
+  		<artifactId>BugBoard26</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	
+  	<dependency>
+   	 	<groupId>com.azure</groupId>
+    	<artifactId>azure-storage-blob</artifactId>
+    	<version>12.32.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.azure/azure-identity -->
+	<dependency>
+	    <groupId>com.azure</groupId>
+	    <artifactId>azure-identity</artifactId>
+	    <version>1.19.0-beta.1</version>
+	    <scope>compile</scope>
+	</dependency>
+  </dependencies>
+</project>

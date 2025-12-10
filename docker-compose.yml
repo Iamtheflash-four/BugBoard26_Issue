@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  bugboard26:
+    build: .
+    container_name: bugboard26_app
+    ports:
+      - "8080:8080"
+    environment:
+      AZURE_CLIENT_ID: ${AZURE_CLIENT_ID}
+      AZURE_TENANT_ID: ${AZURE_TENANT_ID}
+      AZURE_CLIENT_SECRET: ${AZURE_CLIENT_SECRET}
