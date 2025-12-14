@@ -3,6 +3,7 @@ package service;
 import java.io.File;
 import java.nio.file.Files;
 
+import dto.ImageDTO;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Client;
@@ -13,12 +14,12 @@ import jakarta.ws.rs.core.Response;
 
 public class FileUploader
 {
-    public static Response uploadFile(File file, Integer idUtente, Integer idIssue) {
+    public static Response uploadFile(ImageDTO file, Integer idUtente, Integer idIssue) {
         try{
-//        	checkFile(file);
-        	file = new File("C:\\Users\\Sasy\\Desktop\\System Design.pdf");
-        	String path = idUtente + "/" + idIssue + "/" + file.getName();
-        	Response response = new AzureResponse().makePutReqeust(file, path);
+        	checkFile(file);
+        	String path = idUtente + "/" + idIssue + "/" + file.getFileName();
+        	path = path.replace("%2F", "/");
+        	Response response = new BlobResponse().makePutReqeust(file, path);
         	return response;
         } catch (Exception e) {
             return Response.serverError().entity(
@@ -27,8 +28,9 @@ public class FileUploader
         }
     }
 
-	private static void checkFile(File file) {
-		//if(file.get)
+	private static void checkFile(ImageDTO file) throws Exception {
+		if (file.makeFile().length > 10 * 1024 * 1024)
+			throw new Exception("Dimensione file maggiore di 10MB");
 	}
 	
 	public static void main(String[] args)
