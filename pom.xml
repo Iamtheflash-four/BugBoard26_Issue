@@ -104,7 +104,7 @@
 	          <archive>
 	            <manifest>
 	              <!-- Qui va il fully qualified name della tua classe con il main -->
-	              <mainClass>com.example.Main</mainClass>
+	              <mainClass>services.IssueMain</mainClass>
 	            </manifest>
 	          </archive>
 	        </configuration>
@@ -112,4 +112,5 @@
 	    </plugins>
 	</build>
 </project>
+
 
