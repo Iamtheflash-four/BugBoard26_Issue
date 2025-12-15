@@ -1,6 +1,5 @@
 package service;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
@@ -72,7 +71,7 @@ public class SegnalazioneIssue
 	}
 
 	private static ArrayList<String> createImageNames(IssueWithImagesDTO issue) {
-		ArrayList<String> imageNames = new ArrayList();
+		ArrayList<String> imageNames = new ArrayList<String>();
 		for(ImageDTO image : issue.getImages())
 			imageNames.add(image.getFileName());
 		return imageNames;
