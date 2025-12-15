@@ -104,7 +104,7 @@
 	          <archive>
 	            <manifest>
 	              <!-- Qui va il fully qualified name della tua classe con il main -->
-	              <mainClass>services.IssueMain</mainClass>
+	              <mainClass>service.IssueMain</mainClass>
 	            </manifest>
 	          </archive>
 	        </configuration>
@@ -112,5 +112,6 @@
 	    </plugins>
 	</build>
 </project>
+
 
 
