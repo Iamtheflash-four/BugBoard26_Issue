@@ -1,9 +1,14 @@
-FROM maven:3.9.6-eclipse-temurin-17 AS build
-WORKDIR /app
-COPY . .
-RUN mvn clean package -DskipTests
+FROM maven:3.9.5-eclipse-temurin-17 AS build
+WORKDIR /workspace
+COPY pom.xml .
+RUN mvn -B -DskipTests dependency:go-offline
+COPY src ./src
+RUN mvn -B -DskipTests package
 
-FROM eclipse-temurin:17-jre
-WORKDIR /BugBoard26
-COPY --from=build /app/target/BugBoard_Issue.jar .
-CMD ["java", "-jar", "BugBoard_Issue.jar"]
+#RUN jar tf target/BugBoard26-Issue.jar | grep --color=always json
+
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+COPY --from=build /workspace/target/BugBoard26-Issue.jar .
+EXPOSE 8080
+CMD ["java", "-jar", "BugBoard26-Issue.jar"]
