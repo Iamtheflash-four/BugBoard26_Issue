@@ -1,0 +1,56 @@
+package dto;
+
+public class AssignIssueResponse {
+    private boolean success;
+    private String message;
+    private Integer idIssue;
+    private Integer utenteAssegnato;
+    
+    public AssignIssueResponse() {}
+    
+    // Costruttore per messaggi di errore (solo success e message)
+    public AssignIssueResponse(boolean success, String message) {
+        this.success = success;
+        this.message = message;
+    }
+    
+    // Costruttore completo con tutti i dati
+    public AssignIssueResponse(boolean success, String message, Integer idIssue, Integer utenteAssegnato) {
+        this.success = success;
+        this.message = message;
+        this.idIssue = idIssue;
+        this.utenteAssegnato = utenteAssegnato;
+    }
+    
+    public boolean isSuccess() {
+        return success;
+    }
+    
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+    
+    public String getMessage() {
+        return message;
+    }
+    
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    
+    public Integer getIdIssue() {
+        return idIssue;
+    }
+    
+    public void setIdIssue(Integer idIssue) {
+        this.idIssue = idIssue;
+    }
+    
+    public Integer getUtenteAssegnato() {
+        return utenteAssegnato;
+    }
+    
+    public void setUtenteAssegnato(Integer utenteAssegnato) {
+        this.utenteAssegnato = utenteAssegnato;
+    }
+}
