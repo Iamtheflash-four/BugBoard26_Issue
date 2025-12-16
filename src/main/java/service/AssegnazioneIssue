@@ -5,6 +5,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import dao.IssueAssignmentPostgresDAO;
 import dto.AssignIssueDTO;
+import dto.AssignIssueResponse;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -34,14 +35,14 @@ public class AssegnazioneIssue {
         try {
             // Validazione input
             if (assignDTO == null || assignDTO.getIdIssue() <= 0 || assignDTO.getIdUtenteAssegnato() <= 0) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{\"message\": \"Dati non validi. Verificare idIssue e idUtenteAssegnato\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "Dati non validi. Verificare idIssue e idUtenteAssegnato");
+                return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
             }
             
             // Estrazione e validazione del token
             if (authToken == null || !authToken.startsWith("Bearer ")) {
-                return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("{\"message\": \"Token mancante o non valido\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "Token mancante o non valido");
+                return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
             }
             
             String token = authToken.substring(7); // Rimuove "Bearer "
@@ -54,45 +55,48 @@ public class AssegnazioneIssue {
             
             // VERIFICA CHE L'UTENTE SIA ADMIN
             if (!dao.isAdmin(idUtente)) {
-                return Response.status(Response.Status.FORBIDDEN)
-                        .entity("{\"message\": \"Accesso negato. Solo gli admin possono assegnare le issue\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "Accesso negato. Solo gli admin possono assegnare le issue");
+                return Response.status(Response.Status.FORBIDDEN).entity(response).build();
             }
             
             // Verifica che la issue esista
             if (!dao.issueExists(assignDTO.getIdIssue())) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("{\"message\": \"Issue non trovata\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "Issue non trovata");
+                return Response.status(Response.Status.NOT_FOUND).entity(response).build();
             }
             
             // Verifica che l'utente a cui assegnare esista
             if (!dao.userExists(assignDTO.getIdUtenteAssegnato())) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{\"message\": \"L'utente a cui assegnare la issue non esiste\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "L'utente a cui assegnare la issue non esiste");
+                return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
             }
             
             // Esegui assegnazione
             boolean success = dao.assignIssue(assignDTO.getIdIssue(), assignDTO.getIdUtenteAssegnato());
             
             if (success) {
-                return Response.status(Response.Status.OK)
-                        .entity("{\"message\": \"Issue assegnata con successo\", " +
-                                "\"idIssue\": " + assignDTO.getIdIssue() + ", " +
-                                "\"idUtenteAssegnato\": " + assignDTO.getIdUtenteAssegnato() + "}").build();
+                AssignIssueResponse response = new AssignIssueResponse(
+                    true, 
+                    "Issue assegnata con successo",
+                    assignDTO.getIdIssue(),
+                    assignDTO.getIdUtenteAssegnato()
+                );
+                return Response.status(Response.Status.OK).entity(response).build();
             } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity("{\"message\": \"Errore durante l'assegnazione della issue\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "Errore durante l'assegnazione della issue");
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
             }
             
         } catch (TokenExpiredException e) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("{\"message\": \"Token scaduto\"}").build();
+            AssignIssueResponse response = new AssignIssueResponse(false, "Token scaduto");
+            return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
         } catch (JWTVerificationException e) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("{\"message\": \"Token non valido\"}").build();
+            AssignIssueResponse response = new AssignIssueResponse(false, "Token non valido");
+            return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"message\": \"Errore del server: " + e.getMessage() + "\"}").build();
+            AssignIssueResponse response = new AssignIssueResponse(false, "Errore del server: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
         }
     }
     
@@ -110,14 +114,14 @@ public class AssegnazioneIssue {
         try {
             // Validazione input
             if (idIssue <= 0) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{\"message\": \"ID issue non valido\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "ID issue non valido");
+                return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
             }
             
             // Estrazione e validazione del token
             if (authToken == null || !authToken.startsWith("Bearer ")) {
-                return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("{\"message\": \"Token mancante o non valido\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "Token mancante o non valido");
+                return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
             }
             
             String token = authToken.substring(7);
@@ -130,37 +134,42 @@ public class AssegnazioneIssue {
             
             // VERIFICA CHE L'UTENTE SIA ADMIN
             if (!dao.isAdmin(idUtente)) {
-                return Response.status(Response.Status.FORBIDDEN)
-                        .entity("{\"message\": \"Accesso negato. Solo gli admin possono rimuovere l'assegnazione delle issue\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "Accesso negato. Solo gli admin possono rimuovere l'assegnazione delle issue");
+                return Response.status(Response.Status.FORBIDDEN).entity(response).build();
             }
             
             // Verifica che la issue esista
             if (!dao.issueExists(idIssue)) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("{\"message\": \"Issue non trovata\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "Issue non trovata");
+                return Response.status(Response.Status.NOT_FOUND).entity(response).build();
             }
             
             // Rimuovi assegnazione
             boolean success = dao.unassignIssue(idIssue);
             
             if (success) {
-                return Response.status(Response.Status.OK)
-                        .entity("{\"message\": \"Assegnazione rimossa con successo\", \"idIssue\": " + idIssue + "}").build();
+                AssignIssueResponse response = new AssignIssueResponse(
+                    true,
+                    "Assegnazione rimossa con successo",
+                    idIssue,
+                    null
+                );
+                return Response.status(Response.Status.OK).entity(response).build();
             } else {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .entity("{\"message\": \"Errore durante la rimozione dell'assegnazione\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "Errore durante la rimozione dell'assegnazione");
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
             }
             
         } catch (TokenExpiredException e) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("{\"message\": \"Token scaduto\"}").build();
+            AssignIssueResponse response = new AssignIssueResponse(false, "Token scaduto");
+            return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
         } catch (JWTVerificationException e) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("{\"message\": \"Token non valido\"}").build();
+            AssignIssueResponse response = new AssignIssueResponse(false, "Token non valido");
+            return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"message\": \"Errore del server: " + e.getMessage() + "\"}").build();
+            AssignIssueResponse response = new AssignIssueResponse(false, "Errore del server: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
         }
     }
     
@@ -178,14 +187,14 @@ public class AssegnazioneIssue {
         try {
             // Validazione input
             if (idIssue <= 0) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("{\"message\": \"ID issue non valido\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "ID issue non valido");
+                return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
             }
             
             // Estrazione e validazione del token
             if (authToken == null || !authToken.startsWith("Bearer ")) {
-                return Response.status(Response.Status.UNAUTHORIZED)
-                        .entity("{\"message\": \"Token mancante o non valido\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "Token mancante o non valido");
+                return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
             }
             
             String token = authToken.substring(7);
@@ -198,34 +207,41 @@ public class AssegnazioneIssue {
             
             // Verifica che la issue esista
             if (!dao.issueExists(idIssue)) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("{\"message\": \"Issue non trovata\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(false, "Issue non trovata");
+                return Response.status(Response.Status.NOT_FOUND).entity(response).build();
             }
             
             // Ottieni utente assegnato
             int assignedUser = dao.getAssignedUser(idIssue);
             
             if (assignedUser > 0) {
-                return Response.status(Response.Status.OK)
-                        .entity("{\"idIssue\": " + idIssue + ", " +
-                                "\"utenteAssegnato\": " + assignedUser + "}").build();
+                AssignIssueResponse response = new AssignIssueResponse(
+                    true,
+                    "Utente assegnato recuperato con successo",
+                    idIssue,
+                    assignedUser
+                );
+                return Response.status(Response.Status.OK).entity(response).build();
             } else {
-                return Response.status(Response.Status.OK)
-                        .entity("{\"idIssue\": " + idIssue + ", " +
-                                "\"utenteAssegnato\": null, " +
-                                "\"message\": \"Nessun utente assegnato\"}").build();
+                AssignIssueResponse response = new AssignIssueResponse(
+                    true,
+                    "Nessun utente assegnato a questa issue",
+                    idIssue,
+                    null
+                );
+                return Response.status(Response.Status.OK).entity(response).build();
             }
             
         } catch (TokenExpiredException e) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("{\"message\": \"Token scaduto\"}").build();
+            AssignIssueResponse response = new AssignIssueResponse(false, "Token scaduto");
+            return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
         } catch (JWTVerificationException e) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("{\"message\": \"Token non valido\"}").build();
+            AssignIssueResponse response = new AssignIssueResponse(false, "Token non valido");
+            return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"message\": \"Errore del server: " + e.getMessage() + "\"}").build();
+            AssignIssueResponse response = new AssignIssueResponse(false, "Errore del server: " + e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
         }
     }
 }
