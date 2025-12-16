@@ -1,13 +1,11 @@
 package service;
 
 import java.util.ArrayList;
-
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-
 import dao.IssuePostgresDAO;
+import dto.CreateIssueRequest;
 import dto.ImageDTO;
-import dto.IssueWithImagesDTO;
 import entity.Issue;
 import exceptions.FileNotUploadedException;
 import jakarta.ws.rs.Consumes;
@@ -16,6 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.HeaderParam;
 
 @Path("/issue")
 public class SegnalazioneIssue
@@ -24,14 +23,14 @@ public class SegnalazioneIssue
 	@Path("/segnalazioni")
 	@Consumes(MediaType.APPLICATION_JSON)   
     @Produces(MediaType.APPLICATION_JSON) 
-	public static Response segnalaIssue(IssueWithImagesDTO issueDTO)
+	public static Response segnalaIssue(CreateIssueRequest issueDTO, @HeaderParam("Token") String token)
 	{
 		try {
 			if(!checkIssue(issueDTO))
 				return Response.status(Response.Status.BAD_REQUEST)
 						.entity("Dati non validi").build();
 			int idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
-					.validateUserTokenAndGetID(issueDTO.getIssue().getTokenUtente());
+					.validateUserTokenAndGetID(token);
 			//idUtente restituito correrttamente
 			ArrayList<String> imageNames = createImageNames(issueDTO);
 			int idIssue =  new IssuePostgresDAO().insertIssue(idUtente, issueDTO.getIssue(), imageNames);
@@ -70,14 +69,14 @@ public class SegnalazioneIssue
 		}
 	}
 
-	private static ArrayList<String> createImageNames(IssueWithImagesDTO issue) {
+	private static ArrayList<String> createImageNames(CreateIssueRequest issue) {
 		ArrayList<String> imageNames = new ArrayList<String>();
 		for(ImageDTO image : issue.getImages())
 			imageNames.add(image.getFileName());
 		return imageNames;
 	}
 
-	private static boolean checkIssue(IssueWithImagesDTO issueDTO) 
+	private static boolean checkIssue(CreateIssueRequest issueDTO) 
 	{
 		if(issueDTO == null)
 			return false;

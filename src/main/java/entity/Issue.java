@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Date;
+
 public class Issue 
 {
 	private String progetto;
@@ -7,17 +9,17 @@ public class Issue
 	private String priorita;
 	private String titolo;
 	private String descrizione;
-	private String tokenUtente;
+	private Date data;
 	
 
-	public Issue(String progetto, String tipo, String priorita, String titolo, String descrizione, String tokenUtente) {
+	public Issue(String progetto, String tipo, String priorita, String titolo, String descrizione, Date data) {
 		super();
 		this.progetto = progetto;
 		this.tipo = tipo;
 		this.priorita = priorita;
 		this.titolo = titolo;
 		this.descrizione = descrizione;
-		this.tokenUtente = tokenUtente;
+		this.data = data;
 	}
 	
 	public String getTipo() {
@@ -46,8 +48,12 @@ public class Issue
 		return descrizione;
 	}
 
-	public String getTokenUtente() {
-		return tokenUtente;
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 	public void setProgetto(String progetto) {
@@ -64,9 +70,5 @@ public class Issue
 
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
-	}
-
-	public void setTokenUtente(String tokenUtente) {
-		this.tokenUtente = tokenUtente;
 	}
 }

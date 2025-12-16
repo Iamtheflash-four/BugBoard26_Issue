@@ -5,9 +5,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
+import dto.IssueDTO;
 import entity.Issue;
 
 public class IssuePostgresDAO implements IssueDAO 
@@ -31,6 +31,7 @@ public class IssuePostgresDAO implements IssueDAO
 
 	private String makeQuery() {
 		return  "insert into \"Issue\" ("
+				+ "	   \"idProgetto\","
 				+ "    \"titoloIssue\","
 				+ "    \"descrizione\","
 				+ "    \"tipologia\","
@@ -44,24 +45,55 @@ public class IssuePostgresDAO implements IssueDAO
 				+ "    \"nomeFoto5\","
 				+ "    \"utenteSegnalatore\""
 				+ "  ) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	}
 
 	private void loadValues(PreparedStatement st, int idUtente, Issue issue, ArrayList<String> imageNames) throws SQLException 
 	{
-		st.setString(1, issue.getTitolo());
-		st.setString(2, issue.getDescrizione());
-		st.setString(3, issue.getTipo());
-		st.setString(4, issue.getPriorita());
-		st.setDate(5, Date.valueOf(LocalDate.now()));
-		st.setString(6, "todo");
+		st.setString(1, issue.getProgetto());
+		st.setString(2, issue.getTitolo());
+		st.setString(3, issue.getDescrizione());
+		st.setString(4, issue.getTipo());
+		st.setString(5, issue.getPriorita());
+		st.setDate(6, new Date(issue.getData().getTime()));
+		st.setString(7, "todo");
 		for(int i=1; i<=5; i++)
 		{
 			if(i < imageNames.size())
-				st.setString(6+i, imageNames.get(i-1));	//i-1 perchè gli indici partono da 0
+				st.setString(7+i, imageNames.get(i-1));	//i-1 perchè gli indici partono da 0
 			else 
-				st.setString(6+i, null);
+				st.setString(7+i, null);
 		}
-		st.setInt(12, idUtente);
+		st.setInt(13, idUtente);
+	}
+
+	@Override
+	public ArrayList<IssueDTO> getIssueAssegnateByUser(int idUtente) throws Exception
+	{
+		Connection database = PostgresConnection.connect();
+		String query = "SELECT * FROM \"Issue\" WHERE \"utenteSegnalatore\" = ?";
+		PreparedStatement st = database.prepareStatement(query);
+		st.setInt(1, idUtente);
+		ResultSet risposta = st.executeQuery();
+		
+		ArrayList<IssueDTO> elenco = new ArrayList<IssueDTO>();
+		while(risposta.next())
+		{
+			ArrayList<String> imageNames = new ArrayList<String>(5);
+			for(int i=1; i<=5; i++)
+				imageNames.add(risposta.getString("nomeFoto" + i+1));
+			
+			elenco.add(new IssueDTO(
+					risposta.getInt("idIssue"),
+					risposta.getString("idProgetto"),
+					risposta.getString("tipologia"),
+					risposta.getString("priority"),
+					risposta.getString("titoloIssue"),
+					risposta.getString("descrizione"),
+					risposta.getDate("dataApertuta"),
+					imageNames
+				));
+		}
+		return elenco;
 	}
 }

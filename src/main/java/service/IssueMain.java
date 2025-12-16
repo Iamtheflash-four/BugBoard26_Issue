@@ -5,6 +5,8 @@ import java.net.URI;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class IssueMain 
 {
@@ -25,8 +27,3 @@ public class IssueMain
         System.out.println("Server avviato su http://0.0.0.0:" + port);
 	}
 }
-
-
-
-
-

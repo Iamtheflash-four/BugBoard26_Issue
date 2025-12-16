@@ -1,22 +1,16 @@
 package service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.net.http.HttpRequest;
-import java.nio.file.Files;
+
 
 import dto.ImageDTO;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
 
 public class BlobResponse implements CloudStorage
 {	
-	private WebTarget target;
 	private Client client;
 	
 	public BlobResponse()
