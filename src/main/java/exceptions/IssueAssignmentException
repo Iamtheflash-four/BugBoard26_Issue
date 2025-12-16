@@ -1,0 +1,12 @@
+package exceptions;
+
+public class IssueAssignmentException extends Exception {
+    
+    public IssueAssignmentException(String message) {
+        super(message);
+    }
+    
+    public IssueAssignmentException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
