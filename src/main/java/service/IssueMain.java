@@ -13,7 +13,7 @@ public class IssueMain
 {
 	public static void main(String[] args) 
     {
-        startServer();
+         SpringApplication.run(IssueMain.class, args);
     }
 
 	private static void startServer() {
@@ -28,5 +28,6 @@ public class IssueMain
         System.out.println("Server avviato su http://0.0.0.0:" + port);
 	}
 }
+
 
 
