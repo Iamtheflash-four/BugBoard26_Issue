@@ -1,0 +1,29 @@
+package dto;
+
+public class AssignIssueDTO {
+    private int idIssue;
+    private int idUtenteAssegnato;
+    
+    public AssignIssueDTO() {}
+    
+    public AssignIssueDTO(int idIssue, int idUtenteAssegnato) {
+        this.idIssue = idIssue;
+        this.idUtenteAssegnato = idUtenteAssegnato;
+    }
+    
+    public int getIdIssue() {
+        return idIssue;
+    }
+    
+    public void setIdIssue(int idIssue) {
+        this.idIssue = idIssue;
+    }
+    
+    public int getIdUtenteAssegnato() {
+        return idUtenteAssegnato;
+    }
+    
+    public void setIdUtenteAssegnato(int idUtenteAssegnato) {
+        this.idUtenteAssegnato = idUtenteAssegnato;
+    }
+}
