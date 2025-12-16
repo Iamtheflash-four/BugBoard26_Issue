@@ -9,12 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IssueMain {
-    public static void main(String[] args) {
-        SpringApplication.run(IssueMain.class, args);
-    }
-}
-
 public class IssueMain 
 {
 	public static void main(String[] args) 
@@ -34,4 +28,5 @@ public class IssueMain
         System.out.println("Server avviato su http://0.0.0.0:" + port);
 	}
 }
+
 
