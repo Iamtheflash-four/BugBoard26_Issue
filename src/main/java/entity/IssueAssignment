@@ -1,0 +1,39 @@
+package entity;
+
+public class IssueAssignment {
+    private int idIssue;
+    private int idUtenteAssegnato;
+    private String tokenUtente; // Token dell'utente che fa l'assegnazione
+    
+    public IssueAssignment() {}
+    
+    public IssueAssignment(int idIssue, int idUtenteAssegnato, String tokenUtente) {
+        this.idIssue = idIssue;
+        this.idUtenteAssegnato = idUtenteAssegnato;
+        this.tokenUtente = tokenUtente;
+    }
+    
+    public int getIdIssue() {
+        return idIssue;
+    }
+    
+    public void setIdIssue(int idIssue) {
+        this.idIssue = idIssue;
+    }
+    
+    public int getIdUtenteAssegnato() {
+        return idUtenteAssegnato;
+    }
+    
+    public void setIdUtenteAssegnato(int idUtenteAssegnato) {
+        this.idUtenteAssegnato = idUtenteAssegnato;
+    }
+    
+    public String getTokenUtente() {
+        return tokenUtente;
+    }
+    
+    public void setTokenUtente(String tokenUtente) {
+        this.tokenUtente = tokenUtente;
+    }
+}
