@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
+    <artifactId>spring-boot-starter-web</artifactId>
     <version>3.3.5</version>
     <relativePath/> <!-- cerca nel repository centrale -->
   </parent>
@@ -113,6 +113,7 @@
 </build>
 
 </project>
+
 
 
 
