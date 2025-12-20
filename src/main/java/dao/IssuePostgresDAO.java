@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import dto.IssueDTO;
+import dto.RispostaIssueDTO;
 import entity.Issue;
 
 public class IssuePostgresDAO implements IssueDAO 
@@ -95,5 +96,20 @@ public class IssuePostgresDAO implements IssueDAO
 				));
 		}
 		return elenco;
+	}
+
+	@Override
+	public boolean salvaRisposta(RispostaIssueDTO risposta, int idUtente) throws SQLException {
+		Connection database = PostgresConnection.connect();
+		String query = 	 "UPDATE \"Issue\" SET \"risposta\" = ?, \"statoIssue\" = ? "
+						+"WHERE \"idIssue\" = ? AND \"utenteAssegnato\" = ? ";
+		PreparedStatement st = database.prepareStatement(query);
+		st.setString(1, risposta.getRisposta());
+		st.setString(2, "Completed");
+		st.setInt(4, risposta.getIdIssue());
+		st.setInt(4, idUtente);
+		
+		int result = st.executeUpdate();
+		return result > 0;
 	}
 }
