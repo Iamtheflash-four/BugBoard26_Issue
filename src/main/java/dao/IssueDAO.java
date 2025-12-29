@@ -14,4 +14,6 @@ public interface IssueDAO
 	public ArrayList<IssueDTO> getIssueAssegnateByUser(int idUtente) throws Exception;
 
 	boolean salvaRisposta(RispostaIssueDTO risposta, int idUtente) throws Exception;
+	
+	public ArrayList<IssueDTO> getIssueAssegnateByUserAndPriority(int idUtente, String priorita) throws Exception;
 }
