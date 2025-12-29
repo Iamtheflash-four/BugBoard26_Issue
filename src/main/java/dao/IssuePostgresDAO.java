@@ -112,4 +112,34 @@ public class IssuePostgresDAO implements IssueDAO
 		int result = st.executeUpdate();
 		return result > 0;
 	}
+	
+	@Override
+	public ArrayList<IssueDTO> getIssueAssegnateByUserAndPriority(int idUtente, String priorita) throws Exception {
+	    Connection database = PostgresConnection.connect();
+	    String query = "SELECT * FROM \"Issue\" WHERE \"utenteSegnalatore\" = ? AND \"priority\" = ?";
+	    PreparedStatement st = database.prepareStatement(query);
+	    st.setInt(1, idUtente);
+	    st.setString(2, priorita);
+	    ResultSet risposta = st.executeQuery();
+	    
+	    ArrayList<IssueDTO> elenco = new ArrayList<IssueDTO>();
+	    while(risposta.next()) {
+	        ArrayList<String> imageNames = new ArrayList<String>(5);
+	        for(int i=1; i<=5; i++)
+	            imageNames.add(risposta.getString("nomeFoto" + (i+1)));
+	        
+	        elenco.add(new IssueDTO(
+	                risposta.getInt("idIssue"),
+	                risposta.getString("idProgetto"),
+	                risposta.getString("tipologia"),
+	                risposta.getString("priority"),
+	                risposta.getString("titoloIssue"),
+	                risposta.getString("descrizione"),
+	                risposta.getDate("dataApertura"),
+	                imageNames
+	            ));
+	    }
+	    return elenco;
+	}
+
 }
