@@ -9,11 +9,9 @@ import entity.Issue;
 
 public interface IssueDAO 
 {
-	public int insertIssue(int idUtente, Issue issue, ArrayList<String> imageNames) throws Exception;
+	public long insertIssue(long idUtente, Issue issue, ArrayList<String> imageNames) throws Exception;
 
-	public ArrayList<IssueDTO> getIssueAssegnateByUser(int idUtente) throws Exception;
+	public ArrayList<IssueDTO> getIssueAssegnateByUser(long idUtente) throws Exception;
 
-	boolean salvaRisposta(RispostaIssueDTO risposta, int idUtente) throws Exception;
-	
-	public ArrayList<IssueDTO> getIssueAssegnateByUserAndPriority(int idUtente, String priorita) throws Exception;
+	boolean salvaRisposta(RispostaIssueDTO risposta, long idUtente) throws Exception;
 }

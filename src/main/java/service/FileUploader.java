@@ -14,7 +14,7 @@ import jakarta.ws.rs.core.Response;
 
 public class FileUploader
 {
-    public static Response uploadFile(ImageDTO file, Integer idUtente, Integer idIssue) {
+    public static Response uploadFile(ImageDTO file, Long idUtente, Long idIssue) {
         try{
         	checkFile(file);
         	String path = idUtente + "/" + idIssue + "/" + file.getFileName();
@@ -36,7 +36,7 @@ public class FileUploader
 	public static void main(String[] args)
 	{
 		try {
-			Response r = FileUploader.uploadFile(null, 1234, 12345);
+			Response r = FileUploader.uploadFile(null, 1234L, 12345L);
 			Object s = r.getEntity();
 			System.out.print("Risposta: " + r.getStatus() + " " + s);
 		} catch (Exception e) {

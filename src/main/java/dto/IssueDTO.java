@@ -5,17 +5,17 @@ import java.util.ArrayList;
 
 public class IssueDTO extends entity.Issue
 {
-	int idIssue;
+	long idIssue;
 	ArrayList<String> imageNames;
 	
-	public IssueDTO(int idIssue,String progetto, String tipo, String priorita, String titolo, 
+	public IssueDTO(long idIssue, long idProgetto, String progetto, String tipo, String priorita, String titolo, 
 			String descrizione, Date data, ArrayList<String> imageNames) {
-		super(progetto, tipo, priorita, titolo, descrizione, data);
+		super(idProgetto, progetto, tipo, priorita, titolo, descrizione, data);
 		this.idIssue = idIssue;
 		this.imageNames = imageNames;
 	}
 
-	public int getIdIssue() {
+	public long getIdIssue() {
 		return idIssue;
 	}
 

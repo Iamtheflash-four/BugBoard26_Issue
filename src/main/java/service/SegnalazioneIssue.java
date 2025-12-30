@@ -29,11 +29,11 @@ public class SegnalazioneIssue
 			if(!checkIssue(issueDTO))
 				return Response.status(Response.Status.BAD_REQUEST)
 						.entity("Dati non validi").build();
-			int idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
+			long idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
 					.validateUserTokenAndGetID(token);
 			//idUtente restituito correrttamente
 			ArrayList<String> imageNames = createImageNames(issueDTO);
-			int idIssue =  new IssuePostgresDAO().insertIssue(idUtente, issueDTO.getIssue(), imageNames);
+			long idIssue =  new IssuePostgresDAO().insertIssue(idUtente, issueDTO.getIssue(), imageNames);
 			if(idIssue >= 1)
 			{
 				saveImages(issueDTO.getImages(), idUtente, idIssue);
@@ -60,7 +60,7 @@ public class SegnalazioneIssue
 		}
 	}
 
-	private static void saveImages(ArrayList<ImageDTO> images, Integer idUtente, Integer idIssue) throws FileNotUploadedException {
+	private static void saveImages(ArrayList<ImageDTO> images, Long idUtente, Long idIssue) throws FileNotUploadedException {
 		for (ImageDTO file : images)
 		{
 			Response response = FileUploader.uploadFile(file, idUtente, idIssue);

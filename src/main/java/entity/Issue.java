@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Issue 
 {
+	private long idProgetto;
 	private String progetto;
 	private String tipo;
 	private String priorita;
@@ -12,8 +13,9 @@ public class Issue
 	private Date data;
 	
 
-	public Issue(String progetto, String tipo, String priorita, String titolo, String descrizione, Date data) {
+	public Issue(long idProgetto, String progetto, String tipo, String priorita, String titolo, String descrizione, Date data) {
 		super();
+		this.idProgetto = idProgetto;
 		this.progetto = progetto;
 		this.tipo = tipo;
 		this.priorita = priorita;
@@ -71,4 +73,13 @@ public class Issue
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
+
+	public long getIdProgetto() {
+		return idProgetto;
+	}
+
+	public void setIdProgetto(long idProgetto) {
+		this.idProgetto = idProgetto;
+	}
+	
 }

@@ -14,7 +14,7 @@ import entity.Issue;
 public class IssuePostgresDAO implements IssueDAO 
 {
 	@Override
-	public int insertIssue(int idUtente, Issue issue, ArrayList<String> imageNames) throws Exception 
+	public long insertIssue(long idUtente, Issue issue, ArrayList<String> imageNames) throws Exception 
 	{
 		Connection database = PostgresConnection.connect();
 		String query = makeQuery();
@@ -26,13 +26,14 @@ public class IssuePostgresDAO implements IssueDAO
 			return -1;	//errore
 		ResultSet rs = st.getGeneratedKeys();	//Recupera l'idIssue generato
 		if (rs.next()) 
-		    return rs.getInt(1);
+		    return rs.getLong(1);
 		return -1;
 	}
 
 	private String makeQuery() {
 		return  "insert into \"Issue\" ("
 				+ "	   \"idProgetto\","
+				+ "	   \"nomeProgetto\","
 				+ "    \"titoloIssue\","
 				+ "    \"descrizione\","
 				+ "    \"tipologia\","
@@ -46,35 +47,36 @@ public class IssuePostgresDAO implements IssueDAO
 				+ "    \"nomeFoto5\","
 				+ "    \"utenteSegnalatore\""
 				+ "  ) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	}
 
-	private void loadValues(PreparedStatement st, int idUtente, Issue issue, ArrayList<String> imageNames) throws SQLException 
+	private void loadValues(PreparedStatement st, long idUtente, Issue issue, ArrayList<String> imageNames) throws SQLException 
 	{
-		st.setString(1, issue.getProgetto());
-		st.setString(2, issue.getTitolo());
-		st.setString(3, issue.getDescrizione());
-		st.setString(4, issue.getTipo());
-		st.setString(5, issue.getPriorita());
-		st.setDate(6, new Date(issue.getData().getTime()));
-		st.setString(7, "todo");
+		st.setLong(1, issue.getIdProgetto());
+		st.setString(2, issue.getProgetto());
+		st.setString(3, issue.getTitolo());
+		st.setString(4, issue.getDescrizione());
+		st.setString(5, issue.getTipo());
+		st.setString(6, issue.getPriorita());
+		st.setDate(7, new Date(issue.getData().getTime()));
+		st.setString(8, "todo");
 		for(int i=1; i<=5; i++)
 		{
 			if(i < imageNames.size())
-				st.setString(7+i, imageNames.get(i-1));	//i-1 perchè gli indici partono da 0
+				st.setString(8+i, imageNames.get(i-1));	//i-1 perchè gli indici partono da 0
 			else 
-				st.setString(7+i, null);
+				st.setString(8+i, null);
 		}
-		st.setInt(13, idUtente);
+		st.setLong(14, idUtente);
 	}
 
 	@Override
-	public ArrayList<IssueDTO> getIssueAssegnateByUser(int idUtente) throws Exception
+	public ArrayList<IssueDTO> getIssueAssegnateByUser(long idUtente) throws Exception
 	{
 		Connection database = PostgresConnection.connect();
 		String query = "SELECT * FROM \"Issue\" WHERE \"utenteSegnalatore\" = ?";
 		PreparedStatement st = database.prepareStatement(query);
-		st.setInt(1, idUtente);
+		st.setLong(1, idUtente);
 		ResultSet risposta = st.executeQuery();
 		
 		ArrayList<IssueDTO> elenco = new ArrayList<IssueDTO>();
@@ -85,8 +87,9 @@ public class IssuePostgresDAO implements IssueDAO
 				imageNames.add(risposta.getString("nomeFoto" + i+1));
 			
 			elenco.add(new IssueDTO(
-					risposta.getInt("idIssue"),
-					risposta.getString("idProgetto"),
+					risposta.getLong("idIssue"),
+					risposta.getInt("idProgetto"),
+					risposta.getString("nomeProgetto"),
 					risposta.getString("tipologia"),
 					risposta.getString("priority"),
 					risposta.getString("titoloIssue"),
@@ -99,7 +102,7 @@ public class IssuePostgresDAO implements IssueDAO
 	}
 
 	@Override
-	public boolean salvaRisposta(RispostaIssueDTO risposta, int idUtente) throws SQLException {
+	public boolean salvaRisposta(RispostaIssueDTO risposta, long idUtente) throws SQLException {
 		Connection database = PostgresConnection.connect();
 		String query = 	 "UPDATE \"Issue\" SET \"risposta\" = ?, \"statoIssue\" = ? "
 						+"WHERE \"idIssue\" = ? AND \"utenteAssegnato\" = ? ";
@@ -107,39 +110,9 @@ public class IssuePostgresDAO implements IssueDAO
 		st.setString(1, risposta.getRisposta());
 		st.setString(2, "Completed");
 		st.setInt(4, risposta.getIdIssue());
-		st.setInt(4, idUtente);
+		st.setLong(4, idUtente);
 		
 		int result = st.executeUpdate();
 		return result > 0;
 	}
-	
-	@Override
-	public ArrayList<IssueDTO> getIssueAssegnateByUserAndPriority(int idUtente, String priorita) throws Exception {
-	    Connection database = PostgresConnection.connect();
-	    String query = "SELECT * FROM \"Issue\" WHERE \"utenteSegnalatore\" = ? AND \"priority\" = ?";
-	    PreparedStatement st = database.prepareStatement(query);
-	    st.setInt(1, idUtente);
-	    st.setString(2, priorita);
-	    ResultSet risposta = st.executeQuery();
-	    
-	    ArrayList<IssueDTO> elenco = new ArrayList<IssueDTO>();
-	    while(risposta.next()) {
-	        ArrayList<String> imageNames = new ArrayList<String>(5);
-	        for(int i=1; i<=5; i++)
-	            imageNames.add(risposta.getString("nomeFoto" + (i+1)));
-	        
-	        elenco.add(new IssueDTO(
-	                risposta.getInt("idIssue"),
-	                risposta.getString("idProgetto"),
-	                risposta.getString("tipologia"),
-	                risposta.getString("priority"),
-	                risposta.getString("titoloIssue"),
-	                risposta.getString("descrizione"),
-	                risposta.getDate("dataApertura"),
-	                imageNames
-	            ));
-	    }
-	    return elenco;
-	}
-
 }
