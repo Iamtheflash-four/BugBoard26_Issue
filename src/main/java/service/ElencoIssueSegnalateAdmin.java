@@ -17,7 +17,7 @@ import jakarta.ws.rs.core.Response;
 @Path("/issue")
 public class ElencoIssueSegnalateAdmin 
 {
-	@Path("/elencoIssueAssegnate")
+	@Path("/elencoIssueSegnalateAdmin")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response elencoIssueSegnalateRequest(@HeaderParam("Token") String token)
