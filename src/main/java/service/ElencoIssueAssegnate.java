@@ -24,7 +24,7 @@ public class ElencoIssueAssegnate
 	public Response elencoIssueSegnalateRequest(@HeaderParam("Token") String token)
 	{
 		try {
-			int idUtente = new TokenGenerator(System.getenv("JWT_SECRET))"))
+			int idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
 					.validateUserTokenAndGetID(token);
 			ArrayList<IssueDTO> elencoIssue = 
 				new IssuePostgresDAO().getIssueAssegnateByUser(idUtente);
