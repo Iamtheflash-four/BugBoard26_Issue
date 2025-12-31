@@ -13,5 +13,7 @@ public interface IssueDAO
 
 	public ArrayList<IssueDTO> getIssueAssegnateByUser(long idUtente) throws Exception;
 
-	boolean salvaRisposta(RispostaIssueDTO risposta, long idUtente) throws Exception;
+	public boolean salvaRisposta(RispostaIssueDTO risposta, long idUtente) throws Exception;
+
+	public ArrayList<IssueDTO> getIssueSegnalate() throws Exception;
 }

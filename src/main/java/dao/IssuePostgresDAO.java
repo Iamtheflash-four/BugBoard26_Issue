@@ -88,7 +88,7 @@ public class IssuePostgresDAO implements IssueDAO
 			
 			elenco.add(new IssueDTO(
 					risposta.getLong("idIssue"),
-					risposta.getInt("idProgetto"),
+					risposta.getLong("idProgetto"),
 					risposta.getString("nomeProgetto"),
 					risposta.getString("tipologia"),
 					risposta.getString("priority"),
@@ -114,5 +114,34 @@ public class IssuePostgresDAO implements IssueDAO
 		
 		int result = st.executeUpdate();
 		return result > 0;
+	}
+
+	@Override
+	public ArrayList<IssueDTO> getIssueSegnalate() throws SQLException {
+		Connection database = PostgresConnection.connect();
+		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = NULL";
+		PreparedStatement st = database.prepareStatement(query);
+		ResultSet risposta = st.executeQuery();
+		
+		ArrayList<IssueDTO> elenco = new ArrayList<IssueDTO>();
+		while(risposta.next())
+		{
+			ArrayList<String> imageNames = new ArrayList<String>(5);
+			for(int i=1; i<=5; i++)
+				imageNames.add(risposta.getString("nomeFoto" + i+1));
+			
+			elenco.add(new IssueDTO(
+					risposta.getLong("idIssue"),
+					risposta.getLong("idProgetto"),
+					risposta.getString("nomeProgetto"),
+					risposta.getString("tipologia"),
+					risposta.getString("priority"),
+					risposta.getString("titoloIssue"),
+					risposta.getString("descrizione"),
+					risposta.getDate("dataApertuta"),
+					imageNames
+				));
+		}
+		return elenco;
 	}
 }
