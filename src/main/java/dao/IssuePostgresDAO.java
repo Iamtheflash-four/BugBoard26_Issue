@@ -147,7 +147,6 @@ public class IssuePostgresDAO implements IssueDAO
 		Connection database = PostgresConnection.connect();
 		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = NULL";
 		PreparedStatement st = database.prepareStatement(query);
-		st.setLong(1, idUtente);
 		ResultSet risposta = st.executeQuery();
 		
 		return creaElenco(risposta);
