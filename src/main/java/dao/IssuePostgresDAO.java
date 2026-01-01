@@ -87,6 +87,7 @@ public class IssuePostgresDAO implements IssueDAO
 		ArrayList<IssueDTO> elenco = new ArrayList<IssueDTO>();
 		while(risposta.next())
 		{
+			System.out.print("ID: " + risposta.getLong("idIssue") + "\n");
 			ArrayList<String> imageNames = new ArrayList<String>(5);
 			for(int i=1; i<=5; i++)
 				imageNames.add(risposta.getString("nomeFoto" + (i)));
@@ -124,7 +125,7 @@ public class IssuePostgresDAO implements IssueDAO
 	@Override
 	public ArrayList<IssueDTO> getIssueSegnalate() throws SQLException {
 		Connection database = PostgresConnection.connect();
-		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = NULL";
+		String query = "SELECT * FROM \"Issue\" ";//WHERE \"utenteAssegnato\" = NULL";
 		PreparedStatement st = database.prepareStatement(query);
 		ResultSet risposta = st.executeQuery();
 		
