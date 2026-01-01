@@ -84,7 +84,7 @@ public class IssuePostgresDAO implements IssueDAO
 		{
 			ArrayList<String> imageNames = new ArrayList<String>(5);
 			for(int i=1; i<=5; i++)
-				imageNames.add(risposta.getString("nomeFoto" + (i+1)));
+				imageNames.add(risposta.getString("nomeFoto" + (i)));
 			
 			elenco.add(new IssueDTO(
 					risposta.getLong("idIssue"),
@@ -128,7 +128,7 @@ public class IssuePostgresDAO implements IssueDAO
 		{
 			ArrayList<String> imageNames = new ArrayList<String>(5);
 			for(int i=1; i<=5; i++)
-				imageNames.add(risposta.getString("nomeFoto" + (i+1) ));
+				imageNames.add(risposta.getString("nomeFoto" + i ));
 			
 			elenco.add(new IssueDTO(
 					risposta.getLong("idIssue"),
