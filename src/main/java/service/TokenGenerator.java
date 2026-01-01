@@ -43,17 +43,12 @@ public class TokenGenerator
 		return idUtente;
 	}
 	
-	public int validateAdminTokenAndGetID(String token) {
-		try {
-          	DecodedJWT verify = verifier.verify(token);	
-          	if( verify.getClaim("Admin").asBoolean() == true )
-          		return Integer.parseInt(verify.getSubject());
-          	else	//Non amministratore, accesso negato
-          		return -1;
-          		
-        } catch (final JWTVerificationException e) {
-            return -1;
-        }
+	public int validateAdminTokenAndGetID(String token) throws Exception{
+     	DecodedJWT verify = verifier.verify(token);	
+      	if( verify.getClaim("Admin").asBoolean() == true )
+      		return Integer.parseInt(verify.getSubject());
+      	else	//Non amministratore, accesso negato
+      		throw new JWTVerificationException("Permessi non posseduti");       
 	}
 }
 

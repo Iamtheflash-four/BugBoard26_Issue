@@ -71,14 +71,19 @@ public class IssuePostgresDAO implements IssueDAO
 	}
 
 	@Override
-	public ArrayList<IssueDTO> getIssueAssegnateByUser(long idUtente) throws Exception
+	public ArrayList<IssueDTO> getIssueAssegnateToUser(long idUtente) throws Exception
 	{
 		Connection database = PostgresConnection.connect();
-		String query = "SELECT * FROM \"Issue\" WHERE \"utenteSegnalatore\" = ?";
+		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = ?";
 		PreparedStatement st = database.prepareStatement(query);
 		st.setLong(1, idUtente);
 		ResultSet risposta = st.executeQuery();
 		
+		return creaElenco(risposta);
+	}
+	
+
+	public ArrayList<IssueDTO> creaElenco(ResultSet risposta) throws SQLException {
 		ArrayList<IssueDTO> elenco = new ArrayList<IssueDTO>();
 		while(risposta.next())
 		{
@@ -123,25 +128,28 @@ public class IssuePostgresDAO implements IssueDAO
 		PreparedStatement st = database.prepareStatement(query);
 		ResultSet risposta = st.executeQuery();
 		
-		ArrayList<IssueDTO> elenco = new ArrayList<IssueDTO>();
-		while(risposta.next())
-		{
-			ArrayList<String> imageNames = new ArrayList<String>(5);
-			for(int i=1; i<=5; i++)
-				imageNames.add(risposta.getString("nomeFoto" + i ));
-			
-			elenco.add(new IssueDTO(
-					risposta.getLong("idIssue"),
-					risposta.getLong("idProgetto"),
-					risposta.getString("nomeProgetto"),
-					risposta.getString("tipologia"),
-					risposta.getString("priority"),
-					risposta.getString("titoloIssue"),
-					risposta.getString("descrizione"),
-					risposta.getDate("dataApertuta"),
-					imageNames
-				));
-		}
-		return elenco;
+		return creaElenco(risposta);
+	}
+
+	public ArrayList<IssueDTO> getIssueSegnalateByUtente(long idUtente) throws SQLException 
+	{
+		Connection database = PostgresConnection.connect();
+		String query = "SELECT * FROM \"Issue\" WHERE \"utenteSegnalatore\" = ?";
+		PreparedStatement st = database.prepareStatement(query);
+		st.setLong(1, idUtente);
+		ResultSet risposta = st.executeQuery();
+		
+		return creaElenco(risposta);
+	}
+	
+	public ArrayList<IssueDTO> getIssueSegnalateAdmin(long idUtente) throws SQLException 
+	{
+		Connection database = PostgresConnection.connect();
+		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = NULL";
+		PreparedStatement st = database.prepareStatement(query);
+		st.setLong(1, idUtente);
+		ResultSet risposta = st.executeQuery();
+		
+		return creaElenco(risposta);
 	}
 }

@@ -23,7 +23,7 @@ public class ElencoIssueSegnalateAdmin
 	public Response elencoIssueSegnalateRequest(@HeaderParam("Token") String token)
 	{
 		try {
-			int idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
+			long idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
 					.validateAdminTokenAndGetID(token);
 			ArrayList<IssueDTO> elencoIssue = new IssuePostgresDAO().getIssueSegnalate();
 			return Response.status(Response.Status.OK)

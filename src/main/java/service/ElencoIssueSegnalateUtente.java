@@ -1,10 +1,5 @@
 package service;
 
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-
 import java.util.ArrayList;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
@@ -14,23 +9,25 @@ import dao.IssuePostgresDAO;
 import dto.IssueDTO;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("/issue")
-public class ElencoIssueAssegnate
+public class ElencoIssueSegnalateUtente 
 {
-	@Path("/elencoIssueAssegnate")
+	@Path("/elencoIssueSegnalateUtente")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response elencoIssueAssegnateRequest(@HeaderParam("Token") String token)
+	public Response elencoIssueSegnalateRequest(@HeaderParam("Token") String token)
 	{
 		try {
 			int idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
 					.validateUserTokenAndGetID(token);
-			ArrayList<IssueDTO> elencoIssue = 
-				new IssuePostgresDAO().getIssueAssegnateToUser(idUtente);
+			ArrayList<IssueDTO> elencoIssue = new IssuePostgresDAO().getIssueSegnalateByUtente(idUtente);
 			return Response.status(Response.Status.OK)
 					.entity(elencoIssue).build();
-			
 		} catch (TokenExpiredException e) {
 			return Response.status(Response.Status.UNAUTHORIZED)
 					.entity("Token scaduto").build();
