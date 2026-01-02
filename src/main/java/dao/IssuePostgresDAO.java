@@ -100,7 +100,7 @@ public class IssuePostgresDAO implements IssueDAO
 					risposta.getString("priority"),
 					risposta.getString("titoloIssue"),
 					risposta.getString("descrizione"),
-					risposta.getDate("dataApertuta"),
+					risposta.getDate("dataApertura"),
 					imageNames
 				));
 		}
