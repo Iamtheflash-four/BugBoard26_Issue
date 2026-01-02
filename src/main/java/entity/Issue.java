@@ -1,5 +1,6 @@
 package entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Issue 
@@ -10,10 +11,10 @@ public class Issue
 	private String priorita;
 	private String titolo;
 	private String descrizione;
-	private Date data;
+	private LocalDate data;
 	
 
-	public Issue(long idProgetto, String progetto, String tipo, String priorita, String titolo, String descrizione, Date data) {
+	public Issue(long idProgetto, String progetto, String tipo, String priorita, String titolo, String descrizione, LocalDate data) {
 		super();
 		this.idProgetto = idProgetto;
 		this.progetto = progetto;
@@ -50,11 +51,11 @@ public class Issue
 		return descrizione;
 	}
 
-	public Date getData() {
+	public LocalDate getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 

@@ -58,7 +58,7 @@ public class IssuePostgresDAO implements IssueDAO
 		st.setString(4, issue.getDescrizione());
 		st.setString(5, issue.getTipo());
 		st.setString(6, issue.getPriorita());
-		st.setDate(7, new Date(issue.getData().getTime()));
+		st.setDate(7, java.sql.Date.valueOf(issue.getData()));
 		st.setString(8, "todo");
 		for(int i=1; i<=5; i++)
 		{
@@ -100,7 +100,7 @@ public class IssuePostgresDAO implements IssueDAO
 					risposta.getString("priority"),
 					risposta.getString("titoloIssue"),
 					risposta.getString("descrizione"),
-					risposta.getDate("dataApertura"),
+					risposta.getDate("dataApertura").toLocalDate(),
 					imageNames
 				));
 		}
