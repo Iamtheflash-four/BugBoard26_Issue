@@ -3,6 +3,8 @@ package entity;
 import java.time.LocalDate;
 import java.util.Date;
 
+import jakarta.json.bind.annotation.JsonbDateFormat;
+
 public class Issue 
 {
 	private long idProgetto;
@@ -11,7 +13,9 @@ public class Issue
 	private String priorita;
 	private String titolo;
 	private String descrizione;
+	@JsonbDateFormat("yyyy-MM-dd")
 	private LocalDate data;
+
 	
 
 	public Issue(long idProgetto, String progetto, String tipo, String priorita, String titolo, String descrizione, LocalDate data) {
