@@ -11,6 +11,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import dao.IssuePostgresDAO;
+import dao.SegnalazioneIssuePostgresDAO;
 import dto.IssueDTO;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
@@ -27,7 +28,7 @@ public class ElencoIssueAssegnate
 			int idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
 					.validateUserTokenAndGetID(token);
 			ArrayList<IssueDTO> elencoIssue = 
-				new IssuePostgresDAO().getIssueAssegnateToUser(idUtente);
+				new SegnalazioneIssuePostgresDAO().getIssueAssegnateToUser(idUtente);
 			return Response.status(Response.Status.OK)
 					.entity(elencoIssue).build();
 			

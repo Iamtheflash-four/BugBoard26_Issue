@@ -69,20 +69,7 @@ public class IssuePostgresDAO implements IssueDAO
 		}
 		st.setLong(14, idUtente);
 	}
-
-	@Override
-	public ArrayList<IssueDTO> getIssueAssegnateToUser(long idUtente) throws Exception
-	{
-		Connection database = PostgresConnection.connect();
-		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = ?";
-		PreparedStatement st = database.prepareStatement(query);
-		st.setLong(1, idUtente);
-		ResultSet risposta = st.executeQuery();
-		
-		return creaElenco(risposta);
-	}
 	
-
 	public ArrayList<IssueDTO> creaElenco(ResultSet risposta) throws SQLException {
 		ArrayList<IssueDTO> elenco = new ArrayList<IssueDTO>();
 		while(risposta.next())
@@ -120,36 +107,5 @@ public class IssuePostgresDAO implements IssueDAO
 		
 		int result = st.executeUpdate();
 		return result > 0;
-	}
-
-	@Override
-	public ArrayList<IssueDTO> getIssueSegnalate() throws SQLException {
-		Connection database = PostgresConnection.connect();
-		String query = "SELECT * FROM \"Issue\" ";//WHERE \"utenteAssegnato\" = NULL";
-		PreparedStatement st = database.prepareStatement(query);
-		ResultSet risposta = st.executeQuery();
-		
-		return creaElenco(risposta);
-	}
-
-	public ArrayList<IssueDTO> getIssueSegnalateByUtente(long idUtente) throws SQLException 
-	{
-		Connection database = PostgresConnection.connect();
-		String query = "SELECT * FROM \"Issue\" WHERE \"utenteSegnalatore\" = ?";
-		PreparedStatement st = database.prepareStatement(query);
-		st.setLong(1, idUtente);
-		ResultSet risposta = st.executeQuery();
-		
-		return creaElenco(risposta);
-	}
-	
-	public ArrayList<IssueDTO> getIssueSegnalateAdmin(long idUtente) throws SQLException 
-	{
-		Connection database = PostgresConnection.connect();
-		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = NULL";
-		PreparedStatement st = database.prepareStatement(query);
-		ResultSet risposta = st.executeQuery();
-		
-		return creaElenco(risposta);
 	}
 }
