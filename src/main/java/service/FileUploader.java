@@ -3,6 +3,7 @@ package service;
 import java.io.File;
 import java.nio.file.Files;
 
+import dao.BlobResponse;
 import dto.ImageDTO;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;

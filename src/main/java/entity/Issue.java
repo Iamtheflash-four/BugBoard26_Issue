@@ -86,5 +86,4 @@ public class Issue
 	public void setIdProgetto(long idProgetto) {
 		this.idProgetto = idProgetto;
 	}
-	
 }

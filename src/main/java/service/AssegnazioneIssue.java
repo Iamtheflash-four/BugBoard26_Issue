@@ -1,0 +1,204 @@
+package service;
+
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+
+import dao.IssueAssignmentPostgresDAO;
+import dto.AssignIssueDTO;
+import dao.IssueAssignmentDAO;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
+@Path("/issue")
+public class AssegnazioneIssue {
+    
+    /**
+     * Endpoint per assegnare una issue a un utente
+     * SOLO GLI ADMIN POSSONO ASSEGNARE LE ISSUE
+     */
+    @POST
+    @Path("/assign")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response assegnaIssue(
+            @HeaderParam("Authorization") String authToken,
+            AssignIssueDTO assignDTO) {
+        
+        try {
+            long idAdmin = new TokenGenerator(System.getenv("JWT_SECRET"))
+            		.validateAdminTokenAndGetID(authToken);
+            
+            IssueAssignmentDAO issueDAO = new IssueAssignmentPostgresDAO();
+     
+            // Esegui assegnazione
+            boolean success = issueDAO.assignIssue(assignDTO.getIdIssue(), assignDTO.getIdUtenteAssegnato());
+            
+            if (success) 
+                return Response.status(Response.Status.OK).build();
+            else 
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                		.entity("Errore salvataggio informazione").build();
+            
+            
+        } catch (TokenExpiredException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
+        } catch (JWTVerificationException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
+        } catch (Exception e) {
+        	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
+    }
+    
+//    /**
+//     * Endpoint per rimuovere l'assegnazione di una issue
+//     * SOLO GLI ADMIN POSSONO RIMUOVERE L'ASSEGNAZIONE
+//     */
+//    @DELETE
+//    @Path("/{idIssue}/assign")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response rimuoviAssegnazione(
+//            @HeaderParam("Authorization") String authToken,
+//            @PathParam("idIssue") int idIssue) {
+//        
+//        try {
+//            // Validazione input
+//            if (idIssue <= 0) {
+//                AssignIssueResponse response = new AssignIssueResponse(false, "ID issue non valido");
+//                return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
+//            }
+//            
+//            // Estrazione e validazione del token
+//            if (authToken == null || !authToken.startsWith("Bearer ")) {
+//                AssignIssueResponse response = new AssignIssueResponse(false, "Token mancante o non valido");
+//                return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
+//            }
+//            
+//            String token = authToken.substring(7);
+//            
+//            // Validazione token
+//            int idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
+//                    .validateUserTokenAndGetID(token);
+//            
+//            IssueAssignmentPostgresDAO dao = new IssueAssignmentPostgresDAO();
+//            
+//            // VERIFICA CHE L'UTENTE SIA ADMIN
+//            if (!dao.isAdmin(idUtente)) {
+//                AssignIssueResponse response = new AssignIssueResponse(false, "Accesso negato. Solo gli admin possono rimuovere l'assegnazione delle issue");
+//                return Response.status(Response.Status.FORBIDDEN).entity(response).build();
+//            }
+//            
+//            // Verifica che la issue esista
+//            if (!dao.issueExists(idIssue)) {
+//                AssignIssueResponse response = new AssignIssueResponse(false, "Issue non trovata");
+//                return Response.status(Response.Status.NOT_FOUND).entity(response).build();
+//            }
+//            
+//            // Rimuovi assegnazione
+//            boolean success = dao.unassignIssue(idIssue);
+//            
+//            if (success) {
+//                AssignIssueResponse response = new AssignIssueResponse(
+//                    true,
+//                    "Assegnazione rimossa con successo",
+//                    idIssue,
+//                    null
+//                );
+//                return Response.status(Response.Status.OK).entity(response).build();
+//            } else {
+//                AssignIssueResponse response = new AssignIssueResponse(false, "Errore durante la rimozione dell'assegnazione");
+//                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
+//            }
+//            
+//        } catch (TokenExpiredException e) {
+//            AssignIssueResponse response = new AssignIssueResponse(false, "Token scaduto");
+//            return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
+//        } catch (JWTVerificationException e) {
+//            AssignIssueResponse response = new AssignIssueResponse(false, "Token non valido");
+//            return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            AssignIssueResponse response = new AssignIssueResponse(false, "Errore del server: " + e.getMessage());
+//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
+//        }
+//    }
+//    
+//    /**
+//     * Endpoint per ottenere l'utente assegnato a una issue
+//     * Accessibile a tutti gli utenti autenticati
+//     */
+//    @GET
+//    @Path("/{idIssue}/assigned-user")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getUtenteAssegnato(
+//            @HeaderParam("Authorization") String authToken,
+//            @PathParam("idIssue") int idIssue) {
+//        
+//        try {
+//            // Validazione input
+//            if (idIssue <= 0) {
+//                AssignIssueResponse response = new AssignIssueResponse(false, "ID issue non valido");
+//                return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
+//            }
+//            
+//            // Estrazione e validazione del token
+//            if (authToken == null || !authToken.startsWith("Bearer ")) {
+//                AssignIssueResponse response = new AssignIssueResponse(false, "Token mancante o non valido");
+//                return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
+//            }
+//            
+//            String token = authToken.substring(7);
+//            
+//            // Validazione token
+//            int idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
+//                    .validateUserTokenAndGetID(token);
+//            
+//            IssueAssignmentPostgresDAO dao = new IssueAssignmentPostgresDAO();
+//            
+//            // Verifica che la issue esista
+//            if (!dao.issueExists(idIssue)) {
+//                AssignIssueResponse response = new AssignIssueResponse(false, "Issue non trovata");
+//                return Response.status(Response.Status.NOT_FOUND).entity(response).build();
+//            }
+//            
+//            // Ottieni utente assegnato
+//            int assignedUser = dao.getAssignedUser(idIssue);
+//            
+//            if (assignedUser > 0) {
+//                AssignIssueResponse response = new AssignIssueResponse(
+//                    true,
+//                    "Utente assegnato recuperato con successo",
+//                    idIssue,
+//                    assignedUser
+//                );
+//                return Response.status(Response.Status.OK).entity(response).build();
+//            } else {
+//                AssignIssueResponse response = new AssignIssueResponse(
+//                    true,
+//                    "Nessun utente assegnato a questa issue",
+//                    idIssue,
+//                    null
+//                );
+//                return Response.status(Response.Status.OK).entity(response).build();
+//            }
+//            
+//        } catch (TokenExpiredException e) {
+//            AssignIssueResponse response = new AssignIssueResponse(false, "Token scaduto");
+//            return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
+//        } catch (JWTVerificationException e) {
+//            AssignIssueResponse response = new AssignIssueResponse(false, "Token non valido");
+//            return Response.status(Response.Status.UNAUTHORIZED).entity(response).build();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            AssignIssueResponse response = new AssignIssueResponse(false, "Errore del server: " + e.getMessage());
+//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
+//        }
+//    }
+}
