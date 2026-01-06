@@ -25,7 +25,7 @@ public class SegnalazioneIssuePostgresDAO implements SegnalazioniIssueDAO
 	@Override
 	public ArrayList<IssueDTO> getIssueSegnalate() throws SQLException {
 		Connection database = PostgresConnection.connect();
-		String query = "SELECT * FROM \"Issue\" ";//WHERE \"utenteAssegnato\" = NULL";
+		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = NULL";
 		PreparedStatement st = database.prepareStatement(query);
 		ResultSet risposta = st.executeQuery();
 		
