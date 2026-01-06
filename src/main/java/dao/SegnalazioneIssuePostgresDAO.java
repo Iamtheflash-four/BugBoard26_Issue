@@ -25,7 +25,7 @@ public class SegnalazioneIssuePostgresDAO implements SegnalazioniIssueDAO
 	@Override
 	public ArrayList<IssueDTO> getIssueSegnalate() throws SQLException {
 		Connection database = PostgresConnection.connect();
-		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = NULL";
+		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" IS NULL";
 		PreparedStatement st = database.prepareStatement(query);
 		ResultSet risposta = st.executeQuery();
 		
@@ -59,7 +59,7 @@ public class SegnalazioneIssuePostgresDAO implements SegnalazioniIssueDAO
 	public ArrayList<IssueDTO> getIssueSegnalateAdmin(long idUtente) throws SQLException 
 	{
 		Connection database = PostgresConnection.connect();
-		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = NULL";
+		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" IS NULL";
 		PreparedStatement st = database.prepareStatement(query);
 		ResultSet risposta = st.executeQuery();
 		
@@ -83,7 +83,7 @@ public class SegnalazioneIssuePostgresDAO implements SegnalazioniIssueDAO
 	public ArrayList<IssueDTO> getIssueSegnalateAdminWithPriority(long idUtente, String priorita) throws SQLException 
 	{
 		Connection database = PostgresConnection.connect();
-		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = NULL AND prioriry = ?";
+		String query = "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" IS NULL AND prioriry = ?";
 		PreparedStatement st = database.prepareStatement(query);
 		st.setString(1, priorita);
 		ResultSet risposta = st.executeQuery();
