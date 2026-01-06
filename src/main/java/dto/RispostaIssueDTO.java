@@ -2,10 +2,10 @@ package dto;
 
 public class RispostaIssueDTO 
 {
-	private int idIssue;
+	private long idIssue;
 	private String risposta;
 	
-	public RispostaIssueDTO(Integer idIssue, String risposta) {
+	public RispostaIssueDTO(Long idIssue, String risposta) {
 		super();
 		this.idIssue = idIssue;
 		this.risposta = risposta;
@@ -13,7 +13,7 @@ public class RispostaIssueDTO
 	
 	public RispostaIssueDTO() {}
 
-	public Integer getIdIssue() {
+	public Long getIdIssue() {
 		return idIssue;
 	}
 
