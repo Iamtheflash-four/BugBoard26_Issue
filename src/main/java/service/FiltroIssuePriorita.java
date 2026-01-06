@@ -60,7 +60,7 @@ public class FiltroIssuePriorita {
     @GET
     public Response filtraIssueSegnalateUtenteRequest(
             @HeaderParam("Token") String token,
-            @QueryParam("priorita") String priorita) 
+            @HeaderParam("priorita") String priorita) 
     {
         
         try {
@@ -96,7 +96,7 @@ public class FiltroIssuePriorita {
     @GET
     public Response filtraIssueSegnateAdminRequest(
             @HeaderParam("Token") String token,
-            @QueryParam("priorita") String priorita) 
+            @HeaderParam("priorita") String priorita) 
     {
         
         try {
