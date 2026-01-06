@@ -97,13 +97,12 @@ public class IssuePostgresDAO implements IssueDAO
 	@Override
 	public boolean salvaRisposta(RispostaIssueDTO risposta, long idUtente) throws SQLException {
 		Connection database = PostgresConnection.connect();
-		String query = 	 "UPDATE \"Issue\" SET \"risposta\" = ?, \"statoIssue\" = ? "
+		String query = 	 "UPDATE \"Issue\" SET \"risposta\" = ? "
 						+"WHERE \"idIssue\" = ? AND \"utenteAssegnato\" = ? ";
 		PreparedStatement st = database.prepareStatement(query);
 		st.setString(1, risposta.getRisposta());
-		st.setString(2, "Completed");
-		st.setLong(4, risposta.getIdIssue());
-		st.setLong(4, idUtente);
+		st.setLong(2, risposta.getIdIssue());
+		st.setLong(3, idUtente);
 		
 		int result = st.executeUpdate();
 		return result > 0;
