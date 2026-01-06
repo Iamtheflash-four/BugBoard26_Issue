@@ -17,7 +17,7 @@ public class RispostaIssueDTO
 		return idIssue;
 	}
 
-	public void setIdIssue(Integer idIssue) {
+	public void setIdIssue(Long idIssue) {
 		this.idIssue = idIssue;
 	}
 
