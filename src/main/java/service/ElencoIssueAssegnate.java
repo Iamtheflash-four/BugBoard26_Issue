@@ -19,7 +19,7 @@ import jakarta.ws.rs.HeaderParam;
 @Path("/issue")
 public class ElencoIssueAssegnate
 {
-	@Path("/elencoIssueAssegnate")
+	@Path("/utenti/elenchi/assegnazioni")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response elencoIssueAssegnateRequest(@HeaderParam("Token") String token)

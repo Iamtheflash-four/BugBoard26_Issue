@@ -26,8 +26,6 @@ public class AssegnazioneIssue {
      */
     @POST
     @Path("/assign")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response assegnaIssue(
             @HeaderParam("token") String authToken, @HeaderParam("idIssue") long idIssue,
             @HeaderParam("destinatario") long idUtenteAssegnato) {
