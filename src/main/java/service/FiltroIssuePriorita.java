@@ -25,7 +25,7 @@ public class FiltroIssuePriorita {
     @GET
     public Response filtraIssueAssegnateUtenteRequest(
             @HeaderParam("Token") String token,
-            @QueryParam("priorita") String priorita) 
+            @HeaderParam("priorita") String priorita) 
     {
         
         try {
@@ -117,13 +117,13 @@ public class FiltroIssuePriorita {
             
         } catch (TokenExpiredException e) {
             return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Token scaduto").build();
+                .entity("Token scaduto").build();
         } catch (JWTVerificationException e) {
             return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("Token non valido").build();
+                .entity("Token non valido").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(e.getMessage()).build();
+                .entity(e.getMessage()).build();
         }
     }
 }
