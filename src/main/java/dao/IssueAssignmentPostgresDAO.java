@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class IssueAssignmentPostgresDAO implements IssueAssignmentDAO {
     
     @Override
-    public boolean assignIssue(int idIssue, int idUtenteAssegnato) throws SQLException {
+    public boolean assignIssue(long idIssue, long idUtenteAssegnato) throws SQLException {
         Connection database = null;
         PreparedStatement updateSt = null;
         
@@ -18,8 +18,8 @@ public class IssueAssignmentPostgresDAO implements IssueAssignmentDAO {
             // Update della issue con l'utente assegnato
             String updateQuery = "UPDATE \"Issue\" SET \"utenteAssegnato\" = ? WHERE \"idIssue\" = ?";
             updateSt = database.prepareStatement(updateQuery);
-            updateSt.setInt(1, idUtenteAssegnato);
-            updateSt.setInt(2, idIssue);
+            updateSt.setLong(1, idUtenteAssegnato);
+            updateSt.setLong(2, idIssue);
             
             int rowsAffected = updateSt.executeUpdate();
             

@@ -109,7 +109,7 @@ public class FiltroIssuePriorita {
             	elencoIssue = new SegnalazioneIssuePostgresDAO().getIssueSegnalateAdmin(idUtente);
             else 
             	elencoIssue = new SegnalazioneIssuePostgresDAO()
-                        .getIssueSegnalateAdminWithPriority(idUtente, priorita);
+                    .getIssueSegnalateAdminWithPriority(idUtente, priorita);
             
             
             return Response.status(Response.Status.OK)

@@ -8,7 +8,7 @@ public interface IssueAssignmentDAO {
      * @return true se l'assegnazione ha successo, false altrimenti
      * @throws Exception
      */
-	public boolean assignIssue(int idIssue, int idUtenteAssegnato) throws Exception;
+	public boolean assignIssue(long idIssue, long idUtenteAssegnato) throws Exception;
     
     /**
      * Ottiene l'ID dell'utente assegnato a una issue

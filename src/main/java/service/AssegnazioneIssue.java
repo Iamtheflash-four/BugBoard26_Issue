@@ -29,8 +29,8 @@ public class AssegnazioneIssue {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response assegnaIssue(
-            @HeaderParam("Authorization") String authToken,
-            AssignIssueDTO assignDTO) {
+            @HeaderParam("token") String authToken, @HeaderParam("idIssue") long idIssue,
+            @HeaderParam("destinatario") long idUtenteAssegnato) {
         
         try {
             long idAdmin = new TokenGenerator(System.getenv("JWT_SECRET"))
@@ -39,7 +39,7 @@ public class AssegnazioneIssue {
             IssueAssignmentDAO issueDAO = new IssueAssignmentPostgresDAO();
      
             // Esegui assegnazione
-            boolean success = issueDAO.assignIssue(assignDTO.getIdIssue(), assignDTO.getIdUtenteAssegnato());
+            boolean success = issueDAO.assignIssue(idIssue, idUtenteAssegnato);
             
             if (success) 
                 return Response.status(Response.Status.OK).build();
