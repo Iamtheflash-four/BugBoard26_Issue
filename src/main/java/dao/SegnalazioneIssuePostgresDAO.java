@@ -100,8 +100,7 @@ public class SegnalazioneIssuePostgresDAO implements SegnalazioniIssueDAO
 			ArrayList<String> imageNames = new ArrayList<String>(5);
 			for(int i=1; i<=5; i++)
 				imageNames.add(risposta.getString("nomeFoto" + (i)));
-			
-			elenco.add(new IssueDTO(
+			IssueDTO issue = new IssueDTO(
 					risposta.getLong("idIssue"),
 					risposta.getLong("idProgetto"),
 					risposta.getString("nomeProgetto"),
@@ -109,9 +108,11 @@ public class SegnalazioneIssuePostgresDAO implements SegnalazioniIssueDAO
 					risposta.getString("priority"),
 					risposta.getString("titoloIssue"),
 					risposta.getString("descrizione"),
-					risposta.getDate("dataApertura").toLocalDate(),
-					imageNames
-				));
+					risposta.getDate("dataApertura").toLocalDate()
+				);
+			issue.setImageNames(imageNames);
+			issue.setRisposta(risposta.getString("risposta"));					
+			elenco.add(issue);
 		}
 		return elenco;
 	}

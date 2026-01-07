@@ -70,29 +70,29 @@ public class IssuePostgresDAO implements IssueDAO
 		st.setLong(14, idUtente);
 	}
 	
-	public ArrayList<IssueDTO> creaElenco(ResultSet risposta) throws SQLException {
-		ArrayList<IssueDTO> elenco = new ArrayList<IssueDTO>();
-		while(risposta.next())
-		{
-			System.out.print("ID: " + risposta.getLong("idIssue") + "\n");
-			ArrayList<String> imageNames = new ArrayList<String>(5);
-			for(int i=1; i<=5; i++)
-				imageNames.add(risposta.getString("nomeFoto" + (i)));
-			
-			elenco.add(new IssueDTO(
-					risposta.getLong("idIssue"),
-					risposta.getLong("idProgetto"),
-					risposta.getString("nomeProgetto"),
-					risposta.getString("tipologia"),
-					risposta.getString("priority"),
-					risposta.getString("titoloIssue"),
-					risposta.getString("descrizione"),
-					risposta.getDate("dataApertura").toLocalDate(),
-					imageNames
-				));
-		}
-		return elenco;
-	}
+//	public ArrayList<IssueDTO> creaElenco(ResultSet risposta) throws SQLException {
+//		ArrayList<IssueDTO> elenco = new ArrayList<IssueDTO>();
+//		while(risposta.next())
+//		{
+//			System.out.print("ID: " + risposta.getLong("idIssue") + "\n");
+//			ArrayList<String> imageNames = new ArrayList<String>(5);
+//			for(int i=1; i<=5; i++)
+//				imageNames.add(risposta.getString("nomeFoto" + (i)));
+//			IssueDTO issue = 
+//			elenco.add(new IssueDTO(
+//					risposta.getLong("idIssue"),
+//					risposta.getLong("idProgetto"),
+//					risposta.getString("nomeProgetto"),
+//					risposta.getString("tipologia"),
+//					risposta.getString("priority"),
+//					risposta.getString("titoloIssue"),
+//					risposta.getString("descrizione"),
+//					risposta.getDate("dataApertura").toLocalDate(),
+//					imageNames
+//				));
+//		}
+//		return elenco;
+//	}
 
 	@Override
 	public boolean salvaRisposta(RispostaIssueDTO risposta, long idUtente) throws SQLException {

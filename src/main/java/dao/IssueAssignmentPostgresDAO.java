@@ -40,7 +40,8 @@ public class IssueAssignmentPostgresDAO implements IssueAssignmentDAO {
         try {
             database = PostgresConnection.connect();
             
-            String query = "SELECT \"utenteAssegnato\" FROM \"Issue\" WHERE \"idIssue\" = ?";
+            String query =    "SELECT \"utenteAssegnato\" FROM \"Issue\" WHERE \"idIssue\" = ? "
+            				+ "AND \"utenteSegnalatore\" IS NULL";
             st = database.prepareStatement(query);
             st.setInt(1, idIssue);
             
