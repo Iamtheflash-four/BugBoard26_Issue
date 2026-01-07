@@ -1,7 +1,5 @@
 package dao;
 
-
-
 import dto.ImageDTO;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -32,4 +30,21 @@ public class BlobResponse implements CloudStorage
 		
         return response;
 	}
+	
+	public byte[] download(String path) throws Exception {
+	    Response response = client.target(
+	            "https://bugboardfiles26.blob.core.windows.net/bug-board26-issue/"
+	            + path
+	            + "?" + System.getenv("IMAGES_BLOB_TOKEN")
+	        )
+	        .request()
+	        .get();
+
+	    if (response.getStatus() == 200) {
+	        return response.readEntity(byte[].class);
+	    } else {
+	        throw new Exception("Errore download blob: " + response.getStatus());
+	    }
+	}
+
 }

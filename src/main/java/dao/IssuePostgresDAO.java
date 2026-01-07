@@ -107,4 +107,20 @@ public class IssuePostgresDAO implements IssueDAO
 		int result = st.executeUpdate();
 		return result > 0;
 	}
+
+	public long getUtenteSegnalatore(long idIssue) throws SQLException {
+	    Connection connection = PostgresConnection.connect();
+
+	    String query = "SELECT \"utenteSegnalatore\" FROM \"Issue\" WHERE \"idIssue\" = ?";
+	    PreparedStatement st = connection.prepareStatement(query);
+	    st.setLong(1, idIssue);
+
+	    ResultSet rs = st.executeQuery();
+
+	    if (rs.next()) {
+	        return rs.getLong("utenteSegnalatore");
+	    }
+	    throw new SQLException("Nessun segnalatore trovato per l'issue: " + idIssue);
+	}
+
 }
