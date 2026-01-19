@@ -44,7 +44,7 @@ public class SegnalazioneIssuePostgresDAO implements SegnalazioniIssueDAO
 	}
 	
 	@Override
-	public ArrayList<IssueDTO> getIssueSegnalateByUtente(int idUtente, String priorita) throws SQLException {
+	public ArrayList<IssueDTO> getIssueSegnalateByUtente(long idUtente, String priorita) throws SQLException {
 		Connection database = PostgresConnection.connect();
 		String query = "SELECT * FROM \"Issue\" WHERE \"utenteSegnalatore\" = ? AND priority = ?";
 		PreparedStatement st = database.prepareStatement(query);
@@ -68,7 +68,7 @@ public class SegnalazioneIssuePostgresDAO implements SegnalazioniIssueDAO
 
 	
 	@Override
-	public ArrayList<IssueDTO> getIssueAssegnateByUserAndPriority(int idUtente, String priorita) throws SQLException {
+	public ArrayList<IssueDTO> getIssueAssegnateByUserAndPriority(long idUtente, String priorita) throws SQLException {
 		Connection database = PostgresConnection.connect();
 		String query = 	  "SELECT * FROM \"Issue\" WHERE \"utenteAssegnato\" = ? "
 						+ "AND priority = ?  AND risposta IS NULL";

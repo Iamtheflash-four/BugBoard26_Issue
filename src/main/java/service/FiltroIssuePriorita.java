@@ -29,7 +29,7 @@ public class FiltroIssuePriorita {
     {
         
         try {
-            int idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
+            long idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
                     .validateUserTokenAndGetID(token);
             
             ArrayList<IssueDTO> elencoIssue;
@@ -64,7 +64,7 @@ public class FiltroIssuePriorita {
     {
         
         try {
-            int idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
+            long idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
                     .validateUserTokenAndGetID(token);
             
             ArrayList<IssueDTO> elencoIssue;
@@ -100,7 +100,7 @@ public class FiltroIssuePriorita {
     {
         
         try {
-            int idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
+            long idUtente = new TokenGenerator(System.getenv("JWT_SECRET"))
                     .validateAdminTokenAndGetID(token);
             
             ArrayList<IssueDTO> elencoIssue;

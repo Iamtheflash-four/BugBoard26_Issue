@@ -36,14 +36,14 @@ public class TokenGenerator
                 .sign(algorithm);
     }
 	
-	public int validateUserTokenAndGetID(String token) throws Exception
+	public long validateUserTokenAndGetID(String token) throws JWTVerificationException
 	{
 		DecodedJWT verify = verifier.verify(token);	
 		int idUtente = Integer.parseInt(verify.getSubject());
 		return idUtente;
 	}
 	
-	public int validateAdminTokenAndGetID(String token) throws Exception{
+	public long validateAdminTokenAndGetID(String token) throws Exception{
      	DecodedJWT verify = verifier.verify(token);	
       	if( verify.getClaim("Admin").asBoolean() == true )
       		return Integer.parseInt(verify.getSubject());

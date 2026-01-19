@@ -24,7 +24,7 @@ public class ImmaginiIssue {
    {
         try {
             // Validazione token
-            int idRichiedente = new TokenGenerator(System.getenv("JWT_SECRET"))
+            long idRichiedente = new TokenGenerator(System.getenv("JWT_SECRET"))
                     .validateUserTokenAndGetID(token);
             long idUtente = new IssuePostgresDAO().getUtenteSegnalatore(idIssue);
             

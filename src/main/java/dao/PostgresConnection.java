@@ -17,7 +17,6 @@ public class PostgresConnection
 			e.printStackTrace();
 		}
 		Connection connection = DriverManager.getConnection(url);
-		
-		return connection;
+        return connection;
 	}
 }

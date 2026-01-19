@@ -26,7 +26,7 @@ public class RispostaIssueRequest
 	{
 		try {
 			checkRisposta(risposta);
-			Integer idUtente = new TokenGenerator(System.getenv("JWT_SECRET")).validateUserTokenAndGetID(token);
+			Long idUtente = new TokenGenerator(System.getenv("JWT_SECRET")).validateUserTokenAndGetID(token);
 			
 			if( new IssuePostgresDAO().salvaRisposta(risposta, idUtente) )
 				return Response.status(Response.Status.OK).build();
@@ -45,7 +45,7 @@ public class RispostaIssueRequest
 					.entity(e.getMessage()).build();
 		}
 	}
-
+	
 	private void checkRisposta(RispostaIssueDTO risposta) throws Exception
 	{
 		if(	risposta==null || risposta.getIdIssue() <= 0 || 

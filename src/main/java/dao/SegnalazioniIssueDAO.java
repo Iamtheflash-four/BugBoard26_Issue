@@ -14,11 +14,11 @@ public interface SegnalazioniIssueDAO {
 
 	public ArrayList<IssueDTO> getIssueSegnalateAdmin(long idUtente) throws Exception;
 
-	public ArrayList<IssueDTO> getIssueAssegnateByUserAndPriority(int idUtente, String priorita) throws Exception;
+	public ArrayList<IssueDTO> getIssueAssegnateByUserAndPriority(long idUtente, String priorita) throws Exception;
 
 	public ArrayList<IssueDTO> getIssueSegnalateAdminWithPriority(long idUtente, String priorita) throws Exception;
 
 	public ArrayList<IssueDTO> getIssueSegnalateByUtente(long idUtente) throws Exception;
 
-	public ArrayList<IssueDTO> getIssueSegnalateByUtente(int idUtente, String priorita) throws Exception;
+	public ArrayList<IssueDTO> getIssueSegnalateByUtente(long idUtente, String priorita) throws Exception;
 }

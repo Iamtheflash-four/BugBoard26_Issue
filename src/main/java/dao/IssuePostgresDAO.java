@@ -60,14 +60,18 @@ public class IssuePostgresDAO implements IssueDAO
 		st.setString(6, issue.getPriorita());
 		st.setDate(7, java.sql.Date.valueOf(issue.getData()));
 		st.setString(8, "todo");
+		st.setLong(14, idUtente);
+		
+		if(imageNames == null || imageNames.isEmpty())
+			return;
 		for(int i=1; i<=5; i++)
 		{
-			if(i < imageNames.size())
+			if(i-1 < imageNames.size()) 
 				st.setString(8+i, imageNames.get(i-1));	//i-1 perchè gli indici partono da 0
 			else 
 				st.setString(8+i, null);
 		}
-		st.setLong(14, idUtente);
+		
 	}
 	
 //	public ArrayList<IssueDTO> creaElenco(ResultSet risposta) throws SQLException {
@@ -95,15 +99,15 @@ public class IssuePostgresDAO implements IssueDAO
 //	}
 
 	@Override
-	public boolean salvaRisposta(RispostaIssueDTO risposta, long idUtente) throws SQLException {
+	public boolean salvaRisposta(RispostaIssueDTO risposta, Long idUtente) throws SQLException {
 		Connection database = PostgresConnection.connect();
 		String query = 	 "UPDATE \"Issue\" SET \"risposta\" = ? "
-						+"WHERE \"idIssue\" = ? AND \"utenteAssegnato\" = ? ";
+						+"WHERE \"idIssue\" = ? ";
 		PreparedStatement st = database.prepareStatement(query);
 		st.setString(1, risposta.getRisposta());
 		st.setLong(2, risposta.getIdIssue());
-		st.setLong(3, idUtente);
-		
+		System.out.println("ID issue: " + risposta.getIdIssue());
+		System.out.println("ID utente assegnato: " + risposta.getIdIssue());
 		int result = st.executeUpdate();
 		return result > 0;
 	}

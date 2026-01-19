@@ -1,5 +1,7 @@
 package dao;
 
+import java.io.ByteArrayInputStream;
+
 import dto.ImageDTO;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -26,8 +28,7 @@ public class BlobResponse implements CloudStorage
 			)
 			.request()
 			.header("x-ms-blob-type", "BlockBlob")
-			.put(Entity.entity(stream, MediaType.APPLICATION_OCTET_STREAM));
-		
+			.put(Entity.entity(new ByteArrayInputStream(stream), MediaType.APPLICATION_OCTET_STREAM));
         return response;
 	}
 	
@@ -46,5 +47,4 @@ public class BlobResponse implements CloudStorage
 	        throw new Exception("Errore download blob: " + response.getStatus());
 	    }
 	}
-
 }
