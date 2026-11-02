@@ -39,7 +39,6 @@ public class IssuePostgresDAO implements IssueDAO
 				+ "    \"tipologia\","
 				+ "    \"priority\","
 				+ "    \"dataApertura\","
-				+ "    \"statoIssue\","
 				+ "    \"nomeFoto1\","
 				+ "    \"nomeFoto2\","
 				+ "    \"nomeFoto3\","
@@ -47,7 +46,7 @@ public class IssuePostgresDAO implements IssueDAO
 				+ "    \"nomeFoto5\","
 				+ "    \"utenteSegnalatore\""
 				+ "  ) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	}
 
 	private void loadValues(PreparedStatement st, long idUtente, Issue issue, ArrayList<String> imageNames) throws SQLException 
@@ -59,19 +58,18 @@ public class IssuePostgresDAO implements IssueDAO
 		st.setString(5, issue.getTipo());
 		st.setString(6, issue.getPriorita());
 		st.setDate(7, java.sql.Date.valueOf(issue.getData()));
-		st.setString(8, "todo");
-		st.setLong(14, idUtente);
+		st.setLong(13, idUtente);
 		
-		if(imageNames == null || imageNames.isEmpty())
-			return;
-		for(int i=1; i<=5; i++)
+		int images=0;
+		if(imageNames != null)
+			images = imageNames.size();
+		for(int i=0; i<5; i++)
 		{
-			if(i-1 < imageNames.size()) 
-				st.setString(8+i, imageNames.get(i-1));	//i-1 perchè gli indici partono da 0
+			if(i < images) 
+				st.setString(8+i, imageNames.get(i));
 			else 
 				st.setString(8+i, null);
-		}
-		
+		}		
 	}
 	
 //	public ArrayList<IssueDTO> creaElenco(ResultSet risposta) throws SQLException {
@@ -101,13 +99,14 @@ public class IssuePostgresDAO implements IssueDAO
 	@Override
 	public boolean salvaRisposta(RispostaIssueDTO risposta, Long idUtente) throws SQLException {
 		Connection database = PostgresConnection.connect();
-		String query = 	 "UPDATE \"Issue\" SET \"risposta\" = ? "
-						+"WHERE \"idIssue\" = ? ";
+		if(risposta == null) 
+			return false;
+		String query = "UPDATE \"Issue\" SET \"risposta\" = ? "
+						+"WHERE \"idIssue\" = ? AND \"risposta\" IS NULL AND \"utenteAssegnato\" = ?";
 		PreparedStatement st = database.prepareStatement(query);
 		st.setString(1, risposta.getRisposta());
 		st.setLong(2, risposta.getIdIssue());
-		System.out.println("ID issue: " + risposta.getIdIssue());
-		System.out.println("ID utente assegnato: " + risposta.getIdIssue());
+		st.setLong(3, idUtente);
 		int result = st.executeUpdate();
 		return result > 0;
 	}

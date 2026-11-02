@@ -8,7 +8,7 @@ public class PostgresConnection
 {
 	public static Connection connect() throws SQLException
 	{
-		String url = System.getenv("DATABASE");
+		String url = System.getenv("DATABASE_Issue");
 
         try {
 			Class.forName("org.postgresql.Driver");

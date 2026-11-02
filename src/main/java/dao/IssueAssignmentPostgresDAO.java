@@ -16,10 +16,12 @@ public class IssueAssignmentPostgresDAO implements IssueAssignmentDAO {
             database = PostgresConnection.connect();
             
             // Update della issue con l'utente assegnato
-            String updateQuery = "UPDATE \"Issue\" SET \"utenteAssegnato\" = ? WHERE \"idIssue\" = ?";
+            String updateQuery = "UPDATE \"Issue\" SET \"utenteAssegnato\" = ? WHERE \"idIssue\" = ? "
+            		+ "AND ? <> \"utenteSegnalatore\" AND \"utenteAssegnato\" IS NULL";
             updateSt = database.prepareStatement(updateQuery);
             updateSt.setLong(1, idUtenteAssegnato);
             updateSt.setLong(2, idIssue);
+            updateSt.setLong(3, idUtenteAssegnato);
             
             int rowsAffected = updateSt.executeUpdate();
             

@@ -31,7 +31,7 @@ public class RispostaIssueRequest
 			if( new IssuePostgresDAO().salvaRisposta(risposta, idUtente) )
 				return Response.status(Response.Status.OK).build();
 			else
-				throw new Exception("L'issue non esiste");
+				throw new Exception("L'issue non esiste o è stata gia risposta");
 		}catch (TokenExpiredException e) {
 			return Response.status(Response.Status.UNAUTHORIZED)
 					.entity("Token scaduto").build();
